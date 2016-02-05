@@ -6,6 +6,8 @@
 <script src="components/d3js/d3.v3.min.js"></script>
 <script src="progressbar.js"></script>
 <script src="charts.js"></script>
+<script src="chartstyles.js"></script>
+<script src="chartstylesx.js"></script>
 <script src="experimentr.js"></script>
 
 <style>
@@ -52,14 +54,16 @@
 <script>
 participantCount = 0;
 currentTrial = 0;
-totalTrials = 60;
+totalTrials = 100;
 var questionTypes = ['absolute', 'relative'],
     rand = Math.round(Math.random()),
     sequence = [
-      // 'modules/consent.html',
-      // 'modules/demographics.html',
-      // 'modules/tutorial.html',
-      'modules/charts.html',
+      'modules/consent.html',
+      'modules/demographics.html',
+       'modules/intro1.html',
+      ('modules/' + questionTypes[rand] + '.html'),
+       'modules/intro2.html',
+      ('modules/' + questionTypes[1 - rand] + '.html'),
       'modules/debrief.html'
     ];
 // load participantCount from server then start experiment

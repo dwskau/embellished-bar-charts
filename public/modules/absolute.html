@@ -3,13 +3,19 @@ input::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-#next-chart {
+  }
+  #response {
+    float:right;
+  }
+  #next-chart {
     float: right;
   }
 
   #prog {
     color: #888888;
+  }
+  #chart-response {
+    width:20px;
   }
 </style>
 <div id="preSam">
@@ -22,18 +28,20 @@ input::-webkit-inner-spin-button {
 
 <p id="question">
 </p>
-<input id="chart-response" name="chart-response" type="number" name="quantity" min="0" autofocus onkeydown="if (event.keyCode == 13) document.getElementById('next-chart').click()">
-
-<p>
-&nbsp;
-</p>
 
 <div>
 <svg id="canvas">
 </svg>
 </div>
 
+<div id="response">
+<input id="chart-response" name="chart-response" type="number" name="quantity" min="0" autofocus onkeydown="if (event.keyCode == 13) document.getElementById('next-chart').click()">%
+<br>
+&nbsp;
+<br>
 <button id="next-chart" type="button">Next</button>
+</div>
+
 
 </div>
 
@@ -42,11 +50,10 @@ input::-webkit-inner-spin-button {
   experimentr.startTimer('trials');
 
   var data = {};
-  var numTrials = 35;
+  var numTrials = 50;
   var trialCounter = 0;
-  done = [false, false, false, false, false, false, false];
+  done = [false, false, false, false, false];
   position = null;
-//  var condition = rand //
 
   init();
 
@@ -65,7 +72,8 @@ input::-webkit-inner-spin-button {
     });
 
     // on input change, enable next chart
-    d3.select('#chart-response').on('keyup', function() { 
+    d3.select('#chart-response').on('keyup', function() {
+    if (event.keyCode != 13)
       d3.select('#next-chart').attr('disabled', null);
     });
 
@@ -73,43 +81,54 @@ input::-webkit-inner-spin-button {
     trial();
   }
 
-  function trial() {
+  function trial() { //trial - a single chart shown to a participant
     experimentr.startTimer('time-trial-' + currentTrial);
-    var labels = ["A", "B", "C"];
     // choose new data
-    currentData = makeData();
-    var currentType = chooseType(trialCounter, participantCount, numTrials / 7);
+    var angle = Math.random() * 360;
 
     // update progress
     drawProgBar("#progress", currentTrial, totalTrials);
 
-    // choose question
-    currentLabel = setQuestion(labels);
 
-    // remove chart
-    d3.select('#chart').remove();
-    d3.selectAll("#clip").remove();
-    // draw chart
-    drawBarChart("#canvas", currentType, currentData, labels, true);
+    // remove old chart
+    d3.selectAll('#chart').remove();
+    // draw new chart
+    var labels = ["A", "B", "C"];
 
-    // store chart parameters
-    if(currentData[currentLabel] == Math.max.apply(null,currentData)) {
-      data['max-mid-min-' + currentTrial] = "max";
-    }
-    else if (currentData[currentLabel] == Math.min.apply(null,currentData)) {
-      data['max-mid-min-' + currentTrial] = "min";
+    var currentData = makeData();
+    currentLabel = setQuestion(labels, currentData);
+
+
+    var charts = chartStyles.concat(chartStyles);
+    charts = shuffle(charts);
+
+    drawBarChart("#canvas", charts[trialCounter], currentData, labels, true); //types: "baseline", "capped", "overlapping", "quadratic", "rounded", "triangle", "zero"
+
+
+
+
+
+
+
+    if (Math.abs(currentLabel[0] - currentLabel[1]) == 1) {
+      data['adjacent-' + currentTrial] = true;
     }
     else {
-      data['max-mid-min-' + currentTrial] = "mid";
-    };
+      data['adjacent-' + currentTrial] = false;
+    }
     data['number-in-series-' + currentTrial] = trialCounter % (numTrials / 7);
     data['number-in-section-' + currentTrial] = trialCounter;
-    data['question-type-' + currentTrial] = "absolute";
-    data['chart-embellishment-' + currentTrial] = currentType;
-    data['question-trial-' + currentTrial] = "value of " + labels[currentLabel];
-    data['correctAns-trial-' + currentTrial] = currentData[currentLabel];
+    data['question-type-' + currentTrial] = "relative";
+    data['chart-embellishment-' + currentTrial] = charts[trialCounter].type;
+    data['question-trial-' + currentTrial] = "what percentage is " + labels[currentLabel[0]] + " of " + labels[currentLabel[1]];
+    data['correctAns-trial-' + currentTrial] = (currentData[currentLabel[0]] / currentData[currentLabel[1]]) * 100;
     data['data-trial-' + currentTrial] = currentData;
 
+
+
+    // store chart parameters
+    // data['chart-type-' + currentTrial] = currentType;
+    data['rotation-' + currentTrial] = angle;
 
     // clear response
     d3.select('#chart-response').property('value', '');
@@ -120,10 +139,6 @@ input::-webkit-inner-spin-button {
   // Validate checks if all data is in for this module
   // in this case, trialCounter should === numTrials
   function validate() {
-    data['bar-' + currentTrial] = currentLabel;
-    data['judged-true-' + currentTrial] = Number(d3.select('#chart-response').property('value')) - currentData[currentLabel];
-    data['ans-percentage-diff-' + currentTrial] = (Number(d3.select('#chart-response').property('value')) - currentData[currentLabel]) / currentData[currentLabel];
-    data['log-error-' + currentTrial] = Math.log2(Math.abs(Number(d3.select('#chart-response').property('value')) - currentData[currentLabel]) + 1 / 8);
 
     if(trialCounter === numTrials - 1) {
       // end module timer
@@ -142,12 +157,33 @@ input::-webkit-inner-spin-button {
     }
   }
 
+  // from best answer: http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+  function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex ;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
   function setQuestion(labels) {
     var label = Math.floor(Math.random() * labels.length);
     d3.select('#question')
       .text(function() {return "In the chart below, what is the value of " + labels[label] + "?"})
     return label;
   }
+
 
 }());
 </script>
