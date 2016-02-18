@@ -1,4 +1,4 @@
-function drawBarChart(target, styles, data, labels, verticalAxis) //types: "baseline", "capped", "overlapping", "quadratic", "rounded", "triangle", "zero"
+function drawBarChart(target, styles, data, labels, verticalAxis, currentLabel) //types: "baseline", "capped", "overlapping", "quadratic", "rounded", "triangle", "zero"
 {
     var height = 200,
         barWidth = 60,
@@ -97,6 +97,19 @@ function drawBarChart(target, styles, data, labels, verticalAxis) //types: "base
         .text(function(d, i) {
             //return labels[i] + data[i];
             return labels[i];
+        })
+        .attr("font-weight", function(d, i) {
+            if (typeof currentLabel[0] !== "undefined") {
+                if (i == currentLabel[0] | i == currentLabel[1])
+                    return "bold";
+                else
+                    return "normal";
+            } else {
+                if (i == currentLabel)
+                    return "bold";
+                else
+                    return "normal";
+            }
         });
 
     // bar.append("circle")
