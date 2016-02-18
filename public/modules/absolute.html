@@ -50,10 +50,13 @@ input::-webkit-inner-spin-button {
   experimentr.startTimer('trials');
 
   var data = {};
-  var numTrials = 50;
+  var numTrials = 44;
   var trialCounter = 0;
   done = [false, false, false, false, false];
   position = null;
+
+  var charts = chartStyles.concat(chartStyles);
+  charts = shuffle(charts);
 
   init();
 
@@ -96,11 +99,8 @@ input::-webkit-inner-spin-button {
     var labels = ["A", "B", "C"];
 
     var currentData = makeData();
-    currentLabel = setQuestion(labels, currentData);
+    currentLabel = setQuestion(labels);
 
-
-    var charts = chartStyles.concat(chartStyles);
-    charts = shuffle(charts);
 
     drawBarChart("#canvas", charts[trialCounter], currentData, labels, true); //types: "baseline", "capped", "overlapping", "quadratic", "rounded", "triangle", "zero"
 
@@ -110,18 +110,19 @@ input::-webkit-inner-spin-button {
 
 
 
+    data['question-type-' + currentTrial] = "absolute";
     if (Math.abs(currentLabel[0] - currentLabel[1]) == 1) {
       data['adjacent-' + currentTrial] = true;
     }
     else {
       data['adjacent-' + currentTrial] = false;
     }
-    data['number-in-series-' + currentTrial] = trialCounter % (numTrials / 7);
-    data['number-in-section-' + currentTrial] = trialCounter;
-    data['question-type-' + currentTrial] = "relative";
+    data['chart-name-' + currentTrial] = charts[trialCounter].name;
+    data['chart-rendering-' + currentTrial] = charts[trialCounter].style;
     data['chart-embellishment-' + currentTrial] = charts[trialCounter].type;
-    data['question-trial-' + currentTrial] = "what percentage is " + labels[currentLabel[0]] + " of " + labels[currentLabel[1]];
-    data['correctAns-trial-' + currentTrial] = (currentData[currentLabel[0]] / currentData[currentLabel[1]]) * 100;
+    data['number-in-section-' + currentTrial] = trialCounter;
+    data['question-trial-' + currentTrial] = "what is the value of " + labels[currentLabel];
+    data['correctAns-trial-' + currentTrial] = currentData[currentLabel];
     data['data-trial-' + currentTrial] = currentData;
 
 
@@ -136,6 +137,9 @@ input::-webkit-inner-spin-button {
   // in this case, trialCounter should === numTrials
   function validate() {
 
+    // end trial timer
+    experimentr.endTimer('time-trial-'+currentTrial);
+
     if(trialCounter === numTrials - 1) {
       // end module timer
       experimentr.endTimer('trials');
@@ -145,8 +149,6 @@ input::-webkit-inner-spin-button {
       currentTrial++;
       experimentr.next();
     } else {
-      // enable next chart button
-      experimentr.endTimer('time-trial-'+currentTrial);
       currentTrial++;
       trialCounter++;
       trial();
@@ -176,7 +178,7 @@ input::-webkit-inner-spin-button {
   function setQuestion(labels) {
     var label = Math.floor(Math.random() * labels.length);
     d3.select('#question')
-      .text(function() {return "In the chart below, what is the value of " + labels[label] + "?"})
+      .html(function() {return "In the chart below, what is the value of <b>" + labels[label] + "</b>?"})
     return label;
   }
 

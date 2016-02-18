@@ -1,132 +1,109 @@
 var chartStyles = [{
     "style": "stretch",
     "type": "triangle",
-    "path": "/modules/img/roof.svg"
+    "path": "/modules/img/pineTree.svg",
+    "name": "pineTree"
 }, {
     "style": "stretch",
     "type": "triangle",
-    "path": "/modules/img/cone.svg"
+    "path": "/modules/img/cone.svg",
+    "name": "cone"
 }, {
     "style": "stretch",
     "type": "triangle",
-    "path": "/modules/img/candyCorn.svg"
+    "path": "/modules/img/candyCorn.svg",
+    "name": "candyCorn"
 }, {
     "style": "stretch",
     "type": "triangle",
-    "path": "/modules/img/pie.svg"
+    "path": "/modules/img/pie.svg",
+    "name": "pie"
 }, {
     "style": "stretch",
     "type": "triangle",
-    "path": "/modules/img/watermelon.svg"
+    "path": "/modules/img/watermelon.svg",
+    "name": "watermelon"
 }, {
     "style": "stretch",
     "type": "rectangle",
-    "path": "/modules/img/window.svg"
+    "path": "/modules/img/window.svg",
+    "name": "window"
 }, {
     "style": "move",
     "type": "rectangle",
-    "path": "/modules/img/building.svg"
+    "path": "/modules/img/building.svg",
+    "name": "building"
 }, {
     "style": "stretch",
     "type": "rectangle",
-    "path": "/modules/img/beerGlass.svg"
+    "path": "/modules/img/beerGlass.svg",
+    "name": "beerGlass"
 }, {
     "style": "stretch",
     "type": "rectangle",
-    "path": "/modules/img/book.svg"
+    "path": "/modules/img/book.svg",
+    "name": "book"
 }, {
     "style": "move",
     "type": "t",
-    "path": "/modules/img/flag.svg"
+    "path": "/modules/img/flag.svg",
+    "name": "flag"
 }, {
     "style": "move",
     "type": "t",
-    "path": "/modules/img/light.svg"
+    "path": "/modules/img/light.svg",
+    "name": "light"
 }, {
     "style": "move",
     "type": "t",
-    "path": "/modules/img/tree.svg"
+    "path": "/modules/img/tree.svg",
+    "name": "tree"
 }, {
     "style": "move",
     "type": "rounded",
-    "path": "/modules/img/cactus.svg"
+    "path": "/modules/img/cactus.svg",
+    "name": "cactus"
 }, {
     "style": "move",
     "type": "t",
-    "path": "/modules/img/mushroom.svg"
+    "path": "/modules/img/mushroom.svg",
+    "name": "mushroom"
 }, {
     "style": "move",
     "type": "t",
-    "path": "/modules/img/sign.svg"
+    "path": "/modules/img/sign.svg",
+    "name": "sign"
 }, {
     "style": "move",
     "type": "rectangle",
-    "path": "/modules/img/lego.svg"
+    "path": "/modules/img/lego.svg",
+    "name": "lego"
 }, {
     "style": "move",
     "type": "rounded",
-    "path": "/modules/img/finger.svg"
+    "path": "/modules/img/finger.svg",
+    "name": "finger"
 }, {
     "style": "move",
     "type": "rounded",
-    "path": "/modules/img/pencil.svg"
+    "path": "/modules/img/pencil.svg",
+    "name": "pencil"
 }, {
     "style": "move",
     "type": "rounded",
-    "path": "/modules/img/baguette.svg"
+    "path": "/modules/img/baguette.svg",
+    "name": "baguette"
 }, {
     "style": "move",
     "type": "rounded",
-    "path": "/modules/img/worm.svg"
+    "path": "/modules/img/worm.svg",
+    "name": "worm"
 }, {
     "style": "baseline",
-    "type": "baseline"
+    "type": "baseline",
+    "name": "baseline"
 }, {
     "style": "baseline",
-    "type": "baseline"
-}, {
-    "style": "baseline",
-    "type": "baseline"
-}, {
-    "style": "baseline",
-    "type": "baseline"
-}, {
-    "style": "baseline",
-    "type": "baseline"
+    "type": "baseline",
+    "name": "baseline"
 }];
-
-// , {
-//     "relativeQuestion": "In the chart below, what percentage is " + labels[label1] + " of " + labels[label2] + "?",
-//     "absoluteQuestion": "In the chart below, what is the value of " + labels[label] + "?",
-//     "style": "move",
-//     "type": "roundedTop",
-//     "path": "/modules/img/phone.svg"
-// }
-// , {
-//     "relativeQuestion": "In the chart below, what percentage is " + labels[label1] + " of " + labels[label2] + "?",
-//     "absoluteQuestion": "In the chart below, what is the value of " + labels[label] + "?",
-//     "style": "move",
-//     "type": "roundedTop",
-//     "path": "/modules/img/popsicle.svg"
-// }
-// , {
-//     "relativeQuestion": "In the chart below, what percentage is " + labels[label1] + " of " + labels[label2] + "?",
-//     "absoluteQuestion": "In the chart below, what is the value of " + labels[label] + "?",
-//     "style": "stretch",
-//     "type": "roundedTop",
-//     "path": "/modules/img/bus.svg"
-// }
-// , {
-//     "relativeQuestion": "In the chart below, what percentage is " + labels[label1] + " of " + labels[label2] + "?",
-//     "absoluteQuestion": "In the chart below, what is the value of " + labels[label] + "?",
-//     "style": "stretch",
-//     "type": "roundedTop",
-//     "path": "/modules/img/toast.svg"
-// }
-// , {
-//     "relativeQuestion": "In the chart below, what percentage is " + labels[label1] + " of " + labels[label2] + "?",
-//     "absoluteQuestion": "In the chart below, what is the value of " + labels[label] + "?",
-//     "style": "stretch",
-//     "type": "roundedTop",
-//     "path": "/modules/img/shrub.svg"
-// }
